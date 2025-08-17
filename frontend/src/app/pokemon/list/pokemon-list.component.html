@@ -1,0 +1,101 @@
+<div class="flex items-center gap-3 mb-3" [formGroup]="filterForm">
+  <!-- Search box (separate FormControl) -->
+  <mat-form-field appearance="fill" class="w-1/3 min-w-[220px]">
+    <mat-label>Search by name</mat-label>
+    <input matInput [formControl]="searchCtrl" placeholder="Pikachu..." />
+  </mat-form-field>
+
+  <!-- Type select -->
+  <mat-form-field appearance="fill" class="min-w-[180px]">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="">All</mat-option>
+      <mat-option
+        *ngFor="
+          let t of [
+            'Normal',
+            'Fire',
+            'Water',
+            'Grass',
+            'Electric',
+            'Ice',
+            'Fighting',
+            'Poison',
+            'Ground',
+            'Flying',
+            'Psychic',
+            'Bug',
+            'Rock',
+            'Ghost',
+            'Dark',
+            'Dragon',
+            'Steel',
+            'Fairy'
+          ]
+        "
+        [value]="t"
+      >
+        {{ t }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Legendary select -->
+  <mat-form-field appearance="fill" class="min-w-[140px]">
+    <mat-label>Legendary</mat-label>
+    <mat-select formControlName="legendary">
+      <mat-option value="">All</mat-option>
+      <mat-option value="true">Yes</mat-option>
+      <mat-option value="false">No</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Speed range -->
+  <div class="flex items-center gap-2">
+    <mat-form-field appearance="fill" class="w-28">
+      <mat-label>Min Speed</mat-label>
+      <input matInput type="number" formControlName="speed" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="w-28">
+      <mat-label>Max Speed</mat-label>
+      <input matInput type="number" formControlName="speedMax" />
+    </mat-form-field>
+  </div>
+
+  <span class="flex-1"></span>
+
+  <!-- CSV Upload -->
+  <button mat-raised-button color="primary" (click)="fileInput.click()">
+    <mat-icon>upload_file</mat-icon>&nbsp;Import CSV
+  </button>
+  <input
+    type="file"
+    #fileInput
+    (change)="importCsv($event.target.files)"
+    accept=".csv"
+    hidden
+  />
+</div>
+
+<!-- Cards -->
+<div class="card-grid">
+  <app-pokemon-card
+    *ngFor="let p of pokemons$ | async"
+    [pokemon]="p"
+    (open)="openDetail($event)"
+    (favorite)="toggleFavorite($event)"
+  ></app-pokemon-card>
+</div>
+
+<!-- Pagination -->
+<div class="mt-4">
+  <mat-paginator
+    [length]="(total$ | async) || 0"
+    [pageSize]="(pageSize$ | async) || 20"
+    [pageIndex]="(page$ | async) || 0"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageChanged($event)"
+  >
+  </mat-paginator>
+</div>
+

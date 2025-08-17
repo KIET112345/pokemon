@@ -1,0 +1,1 @@
+Place images here. Placeholder used for Pokémon.
