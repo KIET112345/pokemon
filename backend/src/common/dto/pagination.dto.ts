@@ -3,7 +3,7 @@ import { IsInt, IsOptional, IsString, IsBooleanString, Min } from 'class-validat
 
 export class PokemonQueryDto {
   @Type(() => Number) @IsInt() @Min(0) @IsOptional() page?: number = 0;
-  @Type(() => Number) @IsInt() @Min(1) @IsOptional() pageSize?: number = 20;
+  @Type(() => Number) @IsInt() @Min(1) @IsOptional() limit?: number = 20;
 
   @IsString() @IsOptional() name?: string;
   @IsString() @IsOptional() type?: string;
